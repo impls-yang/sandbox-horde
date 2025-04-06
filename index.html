@@ -1,0 +1,720 @@
+<html>
+  <head>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      #canvas {
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+    <script type="text/javascript">
+      //
+      const _canvas = document.getElementById('canvas')
+      const dimensions = _canvas.getBoundingClientRect()
+      const width = ~~dimensions.width
+      const height = ~~dimensions.height
+      _canvas.width = width
+      _canvas.height = height
+
+      const context = _canvas.getContext('2d')
+      const image = new Image(108, 24)
+      image.src = 'sprite.png'
+
+      const states = getStates()
+      const keys = Object.keys(states)
+      const n = 5000
+      const agents = Array(n)
+        .fill(null)
+        .map(() => ({
+          x: ~~(Math.random() * width),
+          y: ~~(Math.random() * height),
+          state: keys[~~(Math.random() * keys.length)],
+          sprite: 'stand-0',
+        }))
+
+      setInterval(loop, 1000 / 30)
+
+      function loop() {
+        run()
+        draw()
+      }
+
+      function run() {
+        for (let agent of agents) {
+          // compute next state
+          agent.state = states[agent.state].next[~~(Math.random() * 16)]
+          const next = states[agent.state]
+          agent.x = (agent.x + next.x) % width
+          agent.y = (agent.y + next.y) % height
+          agent.sprite = next.sprite
+        }
+      }
+
+      function draw() {
+        context.fillStyle = '#000'
+        context.fillRect(0, 0, width, height)
+        for (let agent of agents) {
+          switch (agent.sprite) {
+            case 'stand-0':
+              context.drawImage(image, 0, 0, 12, 12, agent.x, agent.y, 12, 12)
+              break
+            case 'walk-r-0':
+              context.drawImage(image, 12, 0, 12, 12, agent.x, agent.y, 12, 12)
+              break
+            case 'walk-r-1':
+              context.drawImage(image, 24, 0, 12, 12, agent.x, agent.y, 12, 12)
+              break
+            case 'walk-r-2':
+              context.drawImage(image, 36, 0, 12, 12, agent.x, agent.y, 12, 12)
+              break
+            case 'walk-r-3':
+              context.drawImage(image, 48, 0, 12, 12, agent.x, agent.y, 12, 12)
+              break
+            case 'walk-r-4':
+              context.drawImage(image, 60, 0, 12, 12, agent.x, agent.y, 12, 12)
+              break
+            case 'walk-r-5':
+              context.drawImage(image, 72, 0, 12, 12, agent.x, agent.y, 12, 12)
+              break
+            case 'walk-r-6':
+              context.drawImage(image, 84, 0, 12, 12, agent.x, agent.y, 12, 12)
+              break
+            case 'walk-r-7':
+              context.drawImage(image, 96, 0, 12, 12, agent.x, agent.y, 12, 12)
+              break
+            case 'walk-l-0':
+              context.drawImage(image, 12, 12, 12, 12, agent.x, agent.y, 12, 12)
+              break
+            case 'walk-l-1':
+              context.drawImage(image, 24, 12, 12, 12, agent.x, agent.y, 12, 12)
+              break
+            case 'walk-l-2':
+              context.drawImage(image, 36, 12, 12, 12, agent.x, agent.y, 12, 12)
+              break
+            case 'walk-l-3':
+              context.drawImage(image, 48, 12, 12, 12, agent.x, agent.y, 12, 12)
+              break
+            case 'walk-l-4':
+              context.drawImage(image, 60, 12, 12, 12, agent.x, agent.y, 12, 12)
+              break
+            case 'walk-l-5':
+              context.drawImage(image, 72, 12, 12, 12, agent.x, agent.y, 12, 12)
+              break
+            case 'walk-l-6':
+              context.drawImage(image, 84, 12, 12, 12, agent.x, agent.y, 12, 12)
+              break
+            case 'walk-l-7':
+              context.drawImage(image, 96, 12, 12, 12, agent.x, agent.y, 12, 12)
+              break
+            default:
+              context.fillStyle = '#f00'
+              context.fillRect(agent.x, agent.y, 12, 12)
+              context.fillStyle = '#000'
+              break
+          }
+        }
+      }
+
+      function getStates() {
+        return {
+          'stand-0': {
+            sprite: 'stand-0',
+            x: 0,
+            y: 0,
+            next: Array(16).fill('stand-1'),
+          },
+          'stand-1': {
+            sprite: 'stand-0',
+            x: 0,
+            y: 0,
+            next: Array(16).fill('stand-2'),
+          },
+          'stand-2': {
+            sprite: 'stand-0',
+            x: 0,
+            y: 0,
+            next: Array(16).fill('stand-3'),
+          },
+          'stand-3': {
+            sprite: 'stand-0',
+            x: 0,
+            y: 0,
+            next: Array(16).fill('stand-4'),
+          },
+          'stand-4': {
+            sprite: 'stand-0',
+            x: 0,
+            y: 0,
+            next: Array(16).fill('stand-5'),
+          },
+          'stand-5': {
+            sprite: 'stand-0',
+            x: 0,
+            y: 0,
+            next: Array(16).fill('stand-6'),
+          },
+          'stand-6': {
+            sprite: 'stand-0',
+            x: 0,
+            y: 0,
+            next: Array(16).fill('stand-7'),
+          },
+          'stand-7': {
+            sprite: 'stand-0',
+            x: 0,
+            y: 0,
+            next: [
+              'stand-0',
+              'stand-0',
+              'stand-0',
+              'stand-0',
+              'stand-0',
+              'stand-0',
+              'stand-0',
+              'stand-0',
+              'stand-0',
+              'stand-0',
+              'stand-0',
+              'stand-0',
+              'walk-0-0',
+              'walk-2-0',
+              'walk-4-0',
+              'walk-6-0',
+            ],
+          },
+          'walk-0-0': {
+            sprite: 'walk-r-0',
+            x: 1,
+            y: 0,
+            next: Array(16).fill('walk-0-1'),
+          },
+          'walk-0-1': {
+            sprite: 'walk-r-1',
+            x: 1,
+            y: 0,
+            next: Array(16).fill('walk-0-2'),
+          },
+          'walk-0-2': {
+            sprite: 'walk-r-2',
+            x: 1,
+            y: 0,
+            next: Array(16).fill('walk-0-3'),
+          },
+          'walk-0-3': {
+            sprite: 'walk-r-3',
+            x: 1,
+            y: 0,
+            next: Array(16).fill('walk-0-4'),
+          },
+          'walk-0-4': {
+            sprite: 'walk-r-4',
+            x: 1,
+            y: 0,
+            next: Array(16).fill('walk-0-5'),
+          },
+          'walk-0-5': {
+            sprite: 'walk-r-5',
+            x: 1,
+            y: 0,
+            next: Array(16).fill('walk-0-6'),
+          },
+          'walk-0-6': {
+            sprite: 'walk-r-6',
+            x: 1,
+            y: 0,
+            next: Array(16).fill('walk-0-7'),
+          },
+          'walk-0-7': {
+            sprite: 'walk-r-7',
+            x: 1,
+            y: 0,
+            next: [
+              'walk-0-0',
+              'walk-0-0',
+              'walk-0-0',
+              'walk-0-0',
+              'walk-0-0',
+              'walk-0-0',
+              'stand-0',
+              'stand-0',
+              'stand-0',
+              'walk-1-0',
+              'walk-2-0',
+              'walk-3-0',
+              'walk-4-0',
+              'walk-5-0',
+              'walk-6-0',
+              'walk-7-0',
+            ],
+          },
+          'walk-1-0': {
+            sprite: 'walk-r-0',
+            x: 1,
+            y: 1,
+            next: Array(16).fill('walk-1-1'),
+          },
+          'walk-1-1': {
+            sprite: 'walk-r-1',
+            x: 1,
+            y: 1,
+            next: Array(16).fill('walk-1-2'),
+          },
+          'walk-1-2': {
+            sprite: 'walk-r-2',
+            x: 1,
+            y: 1,
+            next: Array(16).fill('walk-1-3'),
+          },
+          'walk-1-3': {
+            sprite: 'walk-r-3',
+            x: 1,
+            y: 1,
+            next: Array(16).fill('walk-1-4'),
+          },
+          'walk-1-4': {
+            sprite: 'walk-r-4',
+            x: 1,
+            y: 1,
+            next: Array(16).fill('walk-1-5'),
+          },
+          'walk-1-5': {
+            sprite: 'walk-r-5',
+            x: 1,
+            y: 1,
+            next: Array(16).fill('walk-1-6'),
+          },
+          'walk-1-6': {
+            sprite: 'walk-r-6',
+            x: 1,
+            y: 1,
+            next: Array(16).fill('walk-1-7'),
+          },
+          'walk-1-7': {
+            sprite: 'walk-r-7',
+            x: 1,
+            y: 1,
+            next: [
+              'walk-1-0',
+              'walk-1-0',
+              'walk-1-0',
+              'walk-1-0',
+              'walk-1-0',
+              'walk-1-0',
+              'stand-0',
+              'stand-0',
+              'stand-0',
+              'walk-0-0',
+              'walk-2-0',
+              'walk-3-0',
+              'walk-4-0',
+              'walk-5-0',
+              'walk-6-0',
+              'walk-7-0',
+            ],
+          },
+          'walk-2-0': {
+            sprite: 'walk-r-0',
+            x: 0,
+            y: 1,
+            next: Array(16).fill('walk-2-1'),
+          },
+          'walk-2-1': {
+            sprite: 'walk-r-1',
+            x: 0,
+            y: 1,
+            next: Array(16).fill('walk-2-2'),
+          },
+          'walk-2-2': {
+            sprite: 'walk-r-2',
+            x: 0,
+            y: 1,
+            next: Array(16).fill('walk-2-3'),
+          },
+          'walk-2-3': {
+            sprite: 'walk-r-3',
+            x: 0,
+            y: 1,
+            next: Array(16).fill('walk-2-4'),
+          },
+          'walk-2-4': {
+            sprite: 'walk-r-4',
+            x: 0,
+            y: 1,
+            next: Array(16).fill('walk-2-5'),
+          },
+          'walk-2-5': {
+            sprite: 'walk-r-5',
+            x: 0,
+            y: 1,
+            next: Array(16).fill('walk-2-6'),
+          },
+          'walk-2-6': {
+            sprite: 'walk-r-6',
+            x: 0,
+            y: 1,
+            next: Array(16).fill('walk-2-7'),
+          },
+          'walk-2-7': {
+            sprite: 'walk-r-7',
+            x: 0,
+            y: 1,
+            next: [
+              'walk-2-0',
+              'walk-2-0',
+              'walk-2-0',
+              'walk-2-0',
+              'walk-2-0',
+              'walk-2-0',
+              'stand-0',
+              'stand-0',
+              'stand-0',
+              'walk-0-0',
+              'walk-1-0',
+              'walk-3-0',
+              'walk-4-0',
+              'walk-5-0',
+              'walk-6-0',
+              'walk-7-0',
+            ],
+          },
+          'walk-3-0': {
+            sprite: 'walk-l-0',
+            x: -1,
+            y: 1,
+            next: Array(16).fill('walk-3-1'),
+          },
+          'walk-3-1': {
+            sprite: 'walk-l-1',
+            x: -1,
+            y: 1,
+            next: Array(16).fill('walk-3-2'),
+          },
+          'walk-3-2': {
+            sprite: 'walk-l-2',
+            x: -1,
+            y: 1,
+            next: Array(16).fill('walk-3-3'),
+          },
+          'walk-3-3': {
+            sprite: 'walk-l-3',
+            x: -1,
+            y: 1,
+            next: Array(16).fill('walk-3-4'),
+          },
+          'walk-3-4': {
+            sprite: 'walk-l-4',
+            x: -1,
+            y: 1,
+            next: Array(16).fill('walk-3-5'),
+          },
+          'walk-3-5': {
+            sprite: 'walk-l-5',
+            x: -1,
+            y: 1,
+            next: Array(16).fill('walk-3-6'),
+          },
+          'walk-3-6': {
+            sprite: 'walk-l-6',
+            x: -1,
+            y: 1,
+            next: Array(16).fill('walk-3-7'),
+          },
+          'walk-3-7': {
+            sprite: 'walk-l-7',
+            x: -1,
+            y: 1,
+            next: [
+              'walk-3-0',
+              'walk-3-0',
+              'walk-3-0',
+              'walk-3-0',
+              'walk-3-0',
+              'walk-3-0',
+              'stand-0',
+              'stand-0',
+              'stand-0',
+              'walk-0-0',
+              'walk-1-0',
+              'walk-2-0',
+              'walk-4-0',
+              'walk-5-0',
+              'walk-6-0',
+              'walk-7-0',
+            ],
+          },
+          'walk-4-0': {
+            sprite: 'walk-l-0',
+            x: -1,
+            y: 0,
+            next: Array(16).fill('walk-4-1'),
+          },
+          'walk-4-1': {
+            sprite: 'walk-l-1',
+            x: -1,
+            y: 0,
+            next: Array(16).fill('walk-4-2'),
+          },
+          'walk-4-2': {
+            sprite: 'walk-l-2',
+            x: -1,
+            y: 0,
+            next: Array(16).fill('walk-4-3'),
+          },
+          'walk-4-3': {
+            sprite: 'walk-l-3',
+            x: -1,
+            y: 0,
+            next: Array(16).fill('walk-4-4'),
+          },
+          'walk-4-4': {
+            sprite: 'walk-l-4',
+            x: -1,
+            y: 0,
+            next: Array(16).fill('walk-4-5'),
+          },
+          'walk-4-5': {
+            sprite: 'walk-l-5',
+            x: -1,
+            y: 0,
+            next: Array(16).fill('walk-4-6'),
+          },
+          'walk-4-6': {
+            sprite: 'walk-l-6',
+            x: -1,
+            y: 0,
+            next: Array(16).fill('walk-4-7'),
+          },
+          'walk-4-7': {
+            sprite: 'walk-l-7',
+            x: -1,
+            y: 0,
+            next: [
+              'walk-4-0',
+              'walk-4-0',
+              'walk-4-0',
+              'walk-4-0',
+              'walk-4-0',
+              'walk-4-0',
+              'stand-0',
+              'stand-0',
+              'stand-0',
+              'walk-0-0',
+              'walk-1-0',
+              'walk-2-0',
+              'walk-3-0',
+              'walk-5-0',
+              'walk-6-0',
+              'walk-7-0',
+            ],
+          },
+          'walk-5-0': {
+            sprite: 'walk-l-0',
+            x: -1,
+            y: -1,
+            next: Array(16).fill('walk-5-1'),
+          },
+          'walk-5-1': {
+            sprite: 'walk-l-1',
+            x: -1,
+            y: -1,
+            next: Array(16).fill('walk-5-2'),
+          },
+          'walk-5-2': {
+            sprite: 'walk-l-2',
+            x: -1,
+            y: -1,
+            next: Array(16).fill('walk-5-3'),
+          },
+          'walk-5-3': {
+            sprite: 'walk-l-3',
+            x: -1,
+            y: -1,
+            next: Array(16).fill('walk-5-4'),
+          },
+          'walk-5-4': {
+            sprite: 'walk-l-4',
+            x: -1,
+            y: -1,
+            next: Array(16).fill('walk-5-5'),
+          },
+          'walk-5-5': {
+            sprite: 'walk-l-5',
+            x: -1,
+            y: -1,
+            next: Array(16).fill('walk-5-6'),
+          },
+          'walk-5-6': {
+            sprite: 'walk-l-6',
+            x: -1,
+            y: -1,
+            next: Array(16).fill('walk-5-7'),
+          },
+          'walk-5-7': {
+            sprite: 'walk-l-7',
+            x: -1,
+            y: -1,
+            next: [
+              'walk-5-0',
+              'walk-5-0',
+              'walk-5-0',
+              'walk-5-0',
+              'walk-5-0',
+              'walk-5-0',
+              'stand-0',
+              'stand-0',
+              'stand-0',
+              'walk-0-0',
+              'walk-1-0',
+              'walk-2-0',
+              'walk-3-0',
+              'walk-4-0',
+              'walk-6-0',
+              'walk-7-0',
+            ],
+          },
+          'walk-6-0': {
+            sprite: 'walk-l-0',
+            x: 0,
+            y: -1,
+            next: Array(16).fill('walk-6-1'),
+          },
+          'walk-6-1': {
+            sprite: 'walk-l-1',
+            x: 0,
+            y: -1,
+            next: Array(16).fill('walk-6-2'),
+          },
+          'walk-6-2': {
+            sprite: 'walk-l-2',
+            x: 0,
+            y: -1,
+            next: Array(16).fill('walk-6-3'),
+          },
+          'walk-6-3': {
+            sprite: 'walk-l-3',
+            x: 0,
+            y: -1,
+            next: Array(16).fill('walk-6-4'),
+          },
+          'walk-6-4': {
+            sprite: 'walk-l-4',
+            x: 0,
+            y: -1,
+            next: Array(16).fill('walk-6-5'),
+          },
+          'walk-6-5': {
+            sprite: 'walk-l-5',
+            x: 0,
+            y: -1,
+            next: Array(16).fill('walk-6-6'),
+          },
+          'walk-6-6': {
+            sprite: 'walk-l-6',
+            x: 0,
+            y: -1,
+            next: Array(16).fill('walk-6-7'),
+          },
+          'walk-6-7': {
+            sprite: 'walk-l-7',
+            x: 0,
+            y: -1,
+            next: [
+              'walk-6-0',
+              'walk-6-0',
+              'walk-6-0',
+              'walk-6-0',
+              'walk-6-0',
+              'walk-6-0',
+              'stand-0',
+              'stand-0',
+              'stand-0',
+              'walk-0-0',
+              'walk-1-0',
+              'walk-2-0',
+              'walk-3-0',
+              'walk-4-0',
+              'walk-5-0',
+              'walk-7-0',
+            ],
+          },
+          'walk-7-0': {
+            sprite: 'walk-r-0',
+            x: 1,
+            y: -1,
+            next: Array(16).fill('walk-7-1'),
+          },
+          'walk-7-1': {
+            sprite: 'walk-r-1',
+            x: 1,
+            y: -1,
+            next: Array(16).fill('walk-7-2'),
+          },
+          'walk-7-2': {
+            sprite: 'walk-r-2',
+            x: 1,
+            y: -1,
+            next: Array(16).fill('walk-7-3'),
+          },
+          'walk-7-3': {
+            sprite: 'walk-r-3',
+            x: 1,
+            y: -1,
+            next: Array(16).fill('walk-7-4'),
+          },
+          'walk-7-4': {
+            sprite: 'walk-r-4',
+            x: 1,
+            y: -1,
+            next: Array(16).fill('walk-7-5'),
+          },
+          'walk-7-5': {
+            sprite: 'walk-r-5',
+            x: 1,
+            y: -1,
+            next: Array(16).fill('walk-7-6'),
+          },
+          'walk-7-6': {
+            sprite: 'walk-r-6',
+            x: 1,
+            y: -1,
+            next: Array(16).fill('walk-7-7'),
+          },
+          'walk-7-7': {
+            sprite: 'walk-r-7',
+            x: 1,
+            y: -1,
+            next: [
+              'walk-7-0',
+              'walk-7-0',
+              'walk-7-0',
+              'walk-7-0',
+              'walk-7-0',
+              'walk-7-0',
+              'stand-0',
+              'stand-0',
+              'stand-0',
+              'walk-0-0',
+              'walk-1-0',
+              'walk-2-0',
+              'walk-3-0',
+              'walk-4-0',
+              'walk-5-0',
+              'walk-6-0',
+            ],
+          },
+        }
+      }
+    </script>
+  </body>
+</html>
